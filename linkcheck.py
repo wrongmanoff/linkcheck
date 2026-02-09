@@ -3,7 +3,7 @@
 import argparse
 import sys
 from utils.normalize import normalize_url
-
+from core.analyzer import analyze_url
 
 def main():
     parser = argparse.ArgumentParser(
@@ -25,6 +25,30 @@ def main():
 
     print(f"[+] Input URL      : {input_url}")
     print(f"[+] Normalized URL : {normalized_url}")
+
+     #  Run static analysis
+    result = analyze_url(normalized_url)
+
+    #  Output results
+    print(f"Risk Score: {result['score']}")
+    print("Reasons:")
+
+    if result["reasons"]:
+        for reason in result["reasons"]:
+            print(f" - {reason}")
+    else:
+        print(" - No suspicious indicators found")
+
+    verdict = result["verdict"]
+
+    if verdict == "SAFE":
+        verdict_str = "SAFE "
+    elif verdict == "SUSPICIOUS":
+        verdict_str = "SUSPICIOUS "
+    else:
+        verdict_str = "MALICIOUS "
+
+    print(f"\nFinal Verdict: {verdict_str}")
 
 
 if __name__ == "__main__":
