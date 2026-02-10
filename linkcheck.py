@@ -7,7 +7,7 @@ from core.analyzer import analyze_url
 
 def main():
     parser = argparse.ArgumentParser(
-        description="LinkCheck - CLI tool to analyze URL safety"
+        description="LinkCheck - Static URL & Domain Risk Analysis Tool"
     )
     parser.add_argument(
         "url",
@@ -24,10 +24,14 @@ def main():
         sys.exit(1)
 
     print(f"[+] Input URL      : {input_url}")
-    print(f"[+] Normalized URL : {normalized_url}")
+    print(f"[+] Normalized URL : {normalized_url}\n")
 
      #  Run static analysis
     result = analyze_url(normalized_url)
+
+    #Display domain info (NEW in Phase 2)
+    if result.get("domain"):
+        print(f"[+] Domain         : {result['domain']}\n")
 
     #  Output results
     print(f"Risk Score: {result['score']}")
